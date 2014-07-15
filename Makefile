@@ -34,3 +34,9 @@ venv/_venv_packages_installed: requirements.txt
 	&& pip install --upgrade pip setuptools \
 	&& venv/bin/pip install --download-cache=./.tmp/pip_cache_dir -r requirements.txt --use-mirrors \
 	&& touch venv/_venv_packages_installed
+
+PROG := "mongokit-"$(shell sed -n s/[[:space:]]*Version:[[:space:]]*//p python-mongokit.spec)
+COMMIT := $(shell git rev-parse --verify HEAD)
+
+sources:
+	@git archive --format=tar --prefix="$(PROG)/" $(COMMIT) | gzip > "$(PROG).tar.gz"
